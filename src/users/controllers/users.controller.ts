@@ -7,6 +7,7 @@ import {
     HttpStatus,
     Inject,
     Param,
+    ParseIntPipe,
     Post,
     UseInterceptors,
     UsePipes,
@@ -28,10 +29,11 @@ export class UsersController {
     }
 
     @UseInterceptors(ClassSerializerInterceptor)
-    @Get(':name')
-    getUserByName(@Param('name') name: string) {
-        const result = this.service.getUserByName(name)
-        if (result) return new serialize(result);
+    @Get(':id')
+    getUserByName(@Param('id', ParseIntPipe) id: number) {
+        const result = this.service.getUserByName(id)
+        if (result) return result
+        // new serialize(result);
         else throw new HttpException('user not found', HttpStatus.BAD_REQUEST)
     }
 
